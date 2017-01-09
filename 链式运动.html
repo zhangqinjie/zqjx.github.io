@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style>
+			div{
+				width: 200px;
+				height: 200px;
+				background: red;
+				float: left;
+				margin: 20px;
+				border: black 2px;
+			}
+		</style>
+		<script>
+			window.onload=function(){
+				var a=document.getElementsByTagName("div");
+				for (var i=0;i<a.length;i++) {
+					a[i].onmouseover=function(){
+						move(this,{width:300}
+						 ,10,function(){
+						 	move(this,{height:500,opacity:10}
+						 ,10
+						 )})
+					}
+					a[i].onmouseout=function(){
+						move(this,{width:200}
+						 ,10,function(){
+						 	move(this,{height:200,opacity:100}
+						 ,10
+						 )})
+					}
+				}
+				//fn回调函数；
+				function move(z,qq,s,fn){
+						clearInterval(z.timer);
+					z.timer=setInterval(function(){
+						var isTrue=true;
+						for (var q in qq) {
+							
+						var b=0
+						if(q=="opacity"){
+							b=getStyle(z,"opacity")*100;
+						}else{
+							b=parseInt(getStyle(z,q));
+						}
+						var s=(qq[q]-b)/8
+						s=s>0?Math.ceil(s):Math.floor(s);
+						if(b!=qq[q]){
+							isTrue=false;
+						
+							if(q=="opacity"){
+								z.style.opacity=(b+s)/100;
+								z.style.filter="alpha(opacity="+b+")";
+							}else{
+								z.style[q] =b+s+"px";
+							}
+						}
+						}
+						if(isTrue){
+							clearInterval(z.timer);
+//							if(fn){
+//								fn()
+//							}
+							fn&&fn.call(z);
+						}
+						
+					},30)
+				}
+				function getStyle(obj,attr){
+					if(obj.currentStyle){
+						return obj.currentStyle[attr];
+					}else{
+						return getComputedStyle(obj,false)[attr];
+					}
+				}
+			}
+		</script>
+	</head>
+	<body>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+	</body>
+</html>
+
